@@ -13,3 +13,5 @@ Alias: `uniter::common`
 Hard dependencies: none
 Soft dependencies: `---`
 MVP: empty
+
+Related stack documentation: [Project stack](../../../docs/project-stack.md).
