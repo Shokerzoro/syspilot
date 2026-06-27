@@ -12,6 +12,7 @@ Target: `uniter_syspilot`
 Alias: `uniter::syspilot`
 Hard dependencies: none
 Soft dependencies: `---`
-MVP: empty
+Version: `0.0.2`
+MVP: `+`
 
 Related stack documentation: [Project stack](../../../docs/project-stack.md).
