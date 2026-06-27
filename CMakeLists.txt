@@ -1,5 +1,5 @@
 # Versioning
-project(syspilot VERSION 0.0.1 LANGUAGES CXX)
+project(syspilot VERSION 0.0.2 LANGUAGES CXX)
 
 # Sources
 include(cmake/sources.cmake)
@@ -32,7 +32,6 @@ if(COMMAND devkit_use_swiftcode)
     set(SYSPILOT_VERBOSE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/verbose")
     set(SYSPILOT_VERBOSE_SOURCE_DIRS
         "${CMAKE_CURRENT_SOURCE_DIR}/src/environment"
-        "${CMAKE_CURRENT_SOURCE_DIR}/src/executables"
         "${CMAKE_CURRENT_SOURCE_DIR}/src/logging"
         "${CMAKE_CURRENT_SOURCE_DIR}/src/paths"
         "${CMAKE_CURRENT_SOURCE_DIR}/src/storage"

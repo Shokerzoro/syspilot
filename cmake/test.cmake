@@ -13,5 +13,12 @@ if(SYSPILOT_TEST_SOURCES)
             syspilot
     )
 
+    if(TARGET Qt6::Core)
+        target_link_libraries(syspilot_tests
+            PRIVATE
+                Qt6::Core
+        )
+    endif()
+
     uniter_register_gtest(syspilot_tests)
 endif()
