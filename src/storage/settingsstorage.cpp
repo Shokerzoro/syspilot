@@ -1,10 +1,10 @@
-#include "storage.h"
+#include "settingsstorage.h"
 
 #include <QCoreApplication>
 
 namespace syspilot {
 
-Storage::Storage()
+SettingsStorage::SettingsStorage()
 {
 #ifdef UNITER_ORGANIZATION_NAME
     organization_ = QString::fromUtf8(UNITER_ORGANIZATION_NAME);
@@ -23,7 +23,7 @@ Storage::Storage()
     }
 }
 
-bool Storage::embed_data()
+bool SettingsStorage::embed_data()
 {
     if(!has_identity()) {
         return false;
@@ -45,7 +45,7 @@ bool Storage::embed_data()
     return true;
 }
 
-bool Storage::version(QString& version) const
+bool SettingsStorage::version(QString& version) const
 {
     if(!has_identity()) {
         return false;
@@ -56,7 +56,7 @@ bool Storage::version(QString& version) const
     return true;
 }
 
-bool Storage::update_version(const QString& version)
+bool SettingsStorage::update_version(const QString& version)
 {
     if(!has_identity()) {
         return false;
@@ -68,7 +68,7 @@ bool Storage::update_version(const QString& version)
     return true;
 }
 
-bool Storage::remove_uniter_data()
+bool SettingsStorage::remove_uniter_data()
 {
     if(!has_identity()) {
         return false;
@@ -80,12 +80,12 @@ bool Storage::remove_uniter_data()
     return true;
 }
 
-bool Storage::has_identity() const
+bool SettingsStorage::has_identity() const
 {
     return !organization_.isEmpty() && !application_.isEmpty();
 }
 
-QSettings Storage::make_settings() const
+QSettings SettingsStorage::make_settings() const
 {
     return QSettings(
         QSettings::NativeFormat,

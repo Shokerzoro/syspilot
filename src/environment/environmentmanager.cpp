@@ -1,4 +1,4 @@
-#include "environment.h"
+#include "environmentmanager.h"
 
 #include <paths/paths.h>
 
@@ -6,13 +6,13 @@
 
 namespace syspilot {
 
-Environment& Environment::instance()
+EnvironmentManager& EnvironmentManager::instance()
 {
-    static Environment environment;
+    static EnvironmentManager environment;
     return environment;
 }
 
-bool Environment::set_env()
+bool EnvironmentManager::set_env()
 {
     if(resolve(EnvType::Version).isEmpty()) {
         return false;
@@ -40,29 +40,29 @@ bool Environment::set_env()
     return true;
 }
 
-QString Environment::read(EnvType type) const
+QString EnvironmentManager::read(EnvType type) const
 {
     return qEnvironmentVariable(key(type).constData());
 }
 
-bool Environment::has(EnvType type) const
+bool EnvironmentManager::has(EnvType type) const
 {
     return qEnvironmentVariableIsSet(key(type).constData());
 }
 
-bool Environment::set(EnvType type, const QString& value)
+bool EnvironmentManager::set(EnvType type, const QString& value)
 {
     const QByteArray variable = key(type);
     const QByteArray data = value.toUtf8();
     return qputenv(variable.constData(), QByteArrayView(data));
 }
 
-bool Environment::unset(EnvType type)
+bool EnvironmentManager::unset(EnvType type)
 {
     return qunsetenv(key(type));
 }
 
-QByteArray Environment::key(EnvType type) const
+QByteArray EnvironmentManager::key(EnvType type) const
 {
     switch(type) {
     case EnvType::Version:
@@ -100,9 +100,9 @@ QByteArray Environment::key(EnvType type) const
     return QByteArray();
 }
 
-QString Environment::resolve(EnvType type) const
+QString EnvironmentManager::resolve(EnvType type) const
 {
-    auto& paths = Paths::instance();
+    auto& paths = PathResolver::instance();
 
     switch(type) {
     case EnvType::Version:

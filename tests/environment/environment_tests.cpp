@@ -13,7 +13,7 @@ namespace {
 
 void unset_standard_environment()
 {
-    auto& environment = syspilot::Environment::instance();
+    auto& environment = syspilot::EnvironmentManager::instance();
     environment.unset(syspilot::EnvType::Version);
     environment.unset(syspilot::EnvType::AppRoot);
     environment.unset(syspilot::EnvType::Binaries);
@@ -44,7 +44,7 @@ TEST(EnvironmentTests, EnvTypeStreamsVerboseName)
 
 TEST(EnvironmentTests, SetReadHasAndUnsetVersion)
 {
-    auto& environment = syspilot::Environment::instance();
+    auto& environment = syspilot::EnvironmentManager::instance();
     environment.unset(syspilot::EnvType::Version);
 
     ASSERT_TRUE(environment.set(syspilot::EnvType::Version, QStringLiteral("1.2.3")));
@@ -60,7 +60,7 @@ TEST(EnvironmentTests, SetEnvFillsVersionFromApplicationVersion)
     unset_standard_environment();
     QCoreApplication::setApplicationVersion(QStringLiteral("2.0.0"));
 
-    auto& environment = syspilot::Environment::instance();
+    auto& environment = syspilot::EnvironmentManager::instance();
 
     ASSERT_TRUE(environment.set_env());
     EXPECT_EQ(environment.read(syspilot::EnvType::Version), QStringLiteral("2.0.0"));
@@ -74,8 +74,8 @@ TEST(EnvironmentTests, SetEnvFillsDirectoriesFromPaths)
     unset_standard_environment();
     QCoreApplication::setApplicationVersion(QStringLiteral("2.0.0"));
 
-    auto& environment = syspilot::Environment::instance();
-    auto& paths = syspilot::Paths::instance();
+    auto& environment = syspilot::EnvironmentManager::instance();
+    auto& paths = syspilot::PathResolver::instance();
 
     ASSERT_TRUE(environment.set_env());
     EXPECT_EQ(environment.read(syspilot::EnvType::AppRoot), paths.resolve(syspilot::DirType::AppRoot));
@@ -94,8 +94,8 @@ TEST(EnvironmentTests, SetEnvFillsExecutablesFromPaths)
     unset_standard_environment();
     QCoreApplication::setApplicationVersion(QStringLiteral("2.0.0"));
 
-    auto& environment = syspilot::Environment::instance();
-    auto& paths = syspilot::Paths::instance();
+    auto& environment = syspilot::EnvironmentManager::instance();
+    auto& paths = syspilot::PathResolver::instance();
 
     ASSERT_TRUE(environment.set_env());
     EXPECT_EQ(environment.read(syspilot::EnvType::AppExecutable), paths.executable(syspilot::BinType::App));
@@ -111,14 +111,14 @@ TEST(EnvironmentTests, SetEnvReturnsFalseWhenApplicationVersionIsEmpty)
     unset_standard_environment();
     QCoreApplication::setApplicationVersion(QString());
 
-    EXPECT_FALSE(syspilot::Environment::instance().set_env());
+    EXPECT_FALSE(syspilot::EnvironmentManager::instance().set_env());
 
     unset_standard_environment();
 }
 
 TEST(EnvironmentTests, CanSetReadAndUnsetExecutablePidVariables)
 {
-    auto& environment = syspilot::Environment::instance();
+    auto& environment = syspilot::EnvironmentManager::instance();
     unset_standard_environment();
 
     ASSERT_TRUE(environment.set(syspilot::EnvType::AppPid, QStringLiteral("101")));
@@ -138,7 +138,7 @@ TEST(EnvironmentTests, CanSetReadAndUnsetExecutablePidVariables)
 
 TEST(EnvironmentTests, CanSetReadAndUnsetServerVariables)
 {
-    auto& environment = syspilot::Environment::instance();
+    auto& environment = syspilot::EnvironmentManager::instance();
     unset_standard_environment();
 
     ASSERT_TRUE(environment.set(syspilot::EnvType::ServerType, QStringLiteral("remote")));

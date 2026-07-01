@@ -7,7 +7,6 @@
 
 #include <sstream>
 
-#include <process/childprocess.h>
 #include <process/process.h>
 #include <syspilot/verbose/pdfengineargs.h>
 #include <syspilot/verbose/processtypes.h>
@@ -131,7 +130,7 @@ TEST(ChildProcessTests, RunAndWaitOwnsStartedProcess)
 
 TEST(ProcessTests, InvalidPidStartsStopped)
 {
-    syspilot::Process process(-1);
+    syspilot::ProcessHandle process(-1);
 
     EXPECT_EQ(process.process_id(), -1);
     EXPECT_EQ(process.state(), syspilot::ProcState::STOPPED);
@@ -140,7 +139,7 @@ TEST(ProcessTests, InvalidPidStartsStopped)
 
 TEST(ProcessTests, CurrentPidStartsWorking)
 {
-    syspilot::Process process(QCoreApplication::applicationPid());
+    syspilot::ProcessHandle process(QCoreApplication::applicationPid());
 
     EXPECT_EQ(process.process_id(), QCoreApplication::applicationPid());
     EXPECT_EQ(process.state(), syspilot::ProcState::WORKING);
@@ -153,7 +152,7 @@ TEST(ProcessTests, WaitBlocksUntilExistingPidStops)
     ASSERT_TRUE(child.run()) << child.error_string().toStdString();
     ASSERT_GT(child.process_id(), 0);
 
-    syspilot::Process process(child.process_id());
+    syspilot::ProcessHandle process(child.process_id());
     EXPECT_EQ(process.state(), syspilot::ProcState::WORKING);
 
     EXPECT_TRUE(process.wait());
@@ -163,7 +162,7 @@ TEST(ProcessTests, WaitBlocksUntilExistingPidStops)
 
 TEST(ProcessTests, KillOnInvalidPidKeepsStopped)
 {
-    syspilot::Process process(-1);
+    syspilot::ProcessHandle process(-1);
 
     process.kill();
 

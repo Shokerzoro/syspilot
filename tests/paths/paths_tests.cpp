@@ -13,8 +13,8 @@
 
 TEST(PathsTests, InstanceReturnsSingleObject)
 {
-    auto& first = syspilot::Paths::instance();
-    auto& second = syspilot::Paths::instance();
+    auto& first = syspilot::PathResolver::instance();
+    auto& second = syspilot::PathResolver::instance();
 
     EXPECT_EQ(&first, &second);
 }
@@ -24,7 +24,7 @@ TEST(PathsTests, ResolvesBinariesDirectoryToApplicationDirectory)
     const QString expected = QDir::cleanPath(QCoreApplication::applicationDirPath());
 
     EXPECT_EQ(
-        syspilot::Paths::instance().resolve(syspilot::DirType::Binaries),
+        syspilot::PathResolver::instance().resolve(syspilot::DirType::Binaries),
         expected
     );
 }
@@ -36,7 +36,7 @@ TEST(PathsTests, ResolvesAppRootAsBinariesParentDirectory)
     );
 
     EXPECT_EQ(
-        syspilot::Paths::instance().resolve(syspilot::DirType::AppRoot),
+        syspilot::PathResolver::instance().resolve(syspilot::DirType::AppRoot),
         expected
     );
 }
@@ -48,7 +48,7 @@ TEST(PathsTests, ResolvesDatabaseDirectoryUnderAppRoot)
     );
 
     EXPECT_EQ(
-        syspilot::Paths::instance().resolve(syspilot::DirType::Database),
+        syspilot::PathResolver::instance().resolve(syspilot::DirType::Database),
         appRoot + QStringLiteral("/database")
     );
 }
@@ -56,7 +56,7 @@ TEST(PathsTests, ResolvesDatabaseDirectoryUnderAppRoot)
 TEST(PathsTests, ResolvesTemporaryWorkDirectoriesUnderTemporaryDirectory)
 {
     const QString temporaryRoot = QDir::cleanPath(QStandardPaths::writableLocation(QStandardPaths::TempLocation));
-    auto& paths = syspilot::Paths::instance();
+    auto& paths = syspilot::PathResolver::instance();
 
     EXPECT_EQ(paths.resolve(syspilot::DirType::FileCache), temporaryRoot + QStringLiteral("/cache"));
     EXPECT_EQ(paths.resolve(syspilot::DirType::Updates), temporaryRoot + QStringLiteral("/updates"));
@@ -65,7 +65,7 @@ TEST(PathsTests, ResolvesTemporaryWorkDirectoriesUnderTemporaryDirectory)
 
 TEST(PathsTests, SetterOverridesDirectoryResolving)
 {
-    auto& paths = syspilot::Paths::instance();
+    auto& paths = syspilot::PathResolver::instance();
     const QString expected = QDir::cleanPath(QStringLiteral("C:/Projects/custom-cache"));
 
     paths.set(syspilot::DirType::FileCache, std::filesystem::path("C:/Projects/custom-cache"));
@@ -77,7 +77,7 @@ TEST(PathsTests, SetterOverridesDirectoryResolving)
 
 TEST(PathsTests, EnsureExistsCreatesResolvedDirectory)
 {
-    auto& paths = syspilot::Paths::instance();
+    auto& paths = syspilot::PathResolver::instance();
     const QString updates = paths.resolve(syspilot::DirType::Updates);
     QDir(updates).removeRecursively();
 
@@ -89,30 +89,30 @@ TEST(PathsTests, EnsureExistsCreatesResolvedDirectory)
 
 TEST(PathsTests, ResolvesApplicationExecutableUnderBinariesDirectory)
 {
-    const QString binaries = syspilot::Paths::instance().resolve(syspilot::DirType::Binaries);
+    const QString binaries = syspilot::PathResolver::instance().resolve(syspilot::DirType::Binaries);
 
     EXPECT_EQ(
-        syspilot::Paths::instance().executable(syspilot::BinType::App),
+        syspilot::PathResolver::instance().executable(syspilot::BinType::App),
         binaries + QStringLiteral("/app.exe")
     );
 }
 
 TEST(PathsTests, ResolvesElevatorExecutableUnderBinariesDirectory)
 {
-    const QString binaries = syspilot::Paths::instance().resolve(syspilot::DirType::Binaries);
+    const QString binaries = syspilot::PathResolver::instance().resolve(syspilot::DirType::Binaries);
 
     EXPECT_EQ(
-        syspilot::Paths::instance().executable(syspilot::BinType::Elevator),
+        syspilot::PathResolver::instance().executable(syspilot::BinType::Elevator),
         binaries + QStringLiteral("/elevator.exe")
     );
 }
 
 TEST(PathsTests, ResolvesPdfEngineExecutableUnderBinariesDirectory)
 {
-    const QString binaries = syspilot::Paths::instance().resolve(syspilot::DirType::Binaries);
+    const QString binaries = syspilot::PathResolver::instance().resolve(syspilot::DirType::Binaries);
 
     EXPECT_EQ(
-        syspilot::Paths::instance().executable(syspilot::BinType::PdfEngine),
+        syspilot::PathResolver::instance().executable(syspilot::BinType::PdfEngine),
         binaries + QStringLiteral("/pdfengine.exe")
     );
 }

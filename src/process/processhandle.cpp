@@ -1,4 +1,4 @@
-#include "process.h"
+#include "processhandle.h"
 
 #ifdef Q_OS_WIN
 #include <windows.h>
@@ -31,14 +31,14 @@ BOOL CALLBACK close_window_for_process(HWND window, LPARAM parameter)
 } // namespace
 #endif
 
-Process::Process(qint64 pid)
+ProcessHandle::ProcessHandle(qint64 pid)
     : pid_(pid)
     , state_(ProcState::STOPPED)
 {
     update_state();
 }
 
-void Process::kill()
+void ProcessHandle::kill()
 {
     update_state();
     if(state_ != ProcState::WORKING) {
@@ -56,7 +56,7 @@ void Process::kill()
     update_state();
 }
 
-bool Process::wait()
+bool ProcessHandle::wait()
 {
     update_state();
     if(state_ == ProcState::STOPPED) {
@@ -82,18 +82,18 @@ bool Process::wait()
 #endif
 }
 
-ProcState Process::state()
+ProcState ProcessHandle::state()
 {
     update_state();
     return state_;
 }
 
-qint64 Process::process_id() const
+qint64 ProcessHandle::process_id() const
 {
     return pid_;
 }
 
-void Process::update_state()
+void ProcessHandle::update_state()
 {
     if(pid_ <= 0) {
         state_ = ProcState::STOPPED;

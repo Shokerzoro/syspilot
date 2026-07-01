@@ -1,9 +1,9 @@
 #pragma once
 
-#include <args/clioptions.h>
+#include <args/args.h>
 #include "processtypes.h"
 
-#include <paths/pathtypes.h>
+#include <paths/paths.h>
 
 #include <QProcess>
 #include <QString>

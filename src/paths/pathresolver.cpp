@@ -1,4 +1,4 @@
-#include "paths.h"
+#include "pathresolver.h"
 
 #include <QCoreApplication>
 #include <QDir>
@@ -6,13 +6,13 @@
 
 namespace syspilot {
 
-Paths& Paths::instance()
+PathResolver& PathResolver::instance()
 {
-    static Paths paths;
+    static PathResolver paths;
     return paths;
 }
 
-QString Paths::resolve(DirType type) const
+QString PathResolver::resolve(DirType type) const
 {
     const auto override = overrides_.find(type);
     if(override != overrides_.end()) {
@@ -37,7 +37,7 @@ QString Paths::resolve(DirType type) const
     return QString();
 }
 
-bool Paths::ensure_exists(DirType type) const
+bool PathResolver::ensure_exists(DirType type) const
 {
     const QString resolvedPath = resolve(type);
     if(resolvedPath.isEmpty()) {
@@ -48,7 +48,7 @@ bool Paths::ensure_exists(DirType type) const
     return directory.mkpath(resolvedPath);
 }
 
-void Paths::set(DirType type, const std::filesystem::path& path)
+void PathResolver::set(DirType type, const std::filesystem::path& path)
 {
     if(path.empty()) {
         overrides_.erase(type);
@@ -58,17 +58,17 @@ void Paths::set(DirType type, const std::filesystem::path& path)
     overrides_[type] = path;
 }
 
-QString Paths::executable(BinType type) const
+QString PathResolver::executable(BinType type) const
 {
     return resolve(DirType::Binaries) + QStringLiteral("/") + executable_name(type);
 }
 
-QString Paths::app_root() const
+QString PathResolver::app_root() const
 {
     return QDir::cleanPath(resolve(DirType::Binaries) + QStringLiteral("/.."));
 }
 
-QString Paths::temporary_root() const
+QString PathResolver::temporary_root() const
 {
     const QString temporaryLocation = QStandardPaths::writableLocation(QStandardPaths::TempLocation);
     if(!temporaryLocation.isEmpty()) {
@@ -78,12 +78,12 @@ QString Paths::temporary_root() const
     return QDir::cleanPath(app_root() + QStringLiteral("/tmp"));
 }
 
-QString Paths::clean_path(const std::filesystem::path& path) const
+QString PathResolver::clean_path(const std::filesystem::path& path) const
 {
     return QDir::cleanPath(QString::fromStdString(path.generic_string()));
 }
 
-QString Paths::executable_name(BinType type) const
+QString PathResolver::executable_name(BinType type) const
 {
     QString name;
     switch(type) {

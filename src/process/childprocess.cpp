@@ -7,7 +7,7 @@
 namespace syspilot {
 
 ChildProcess::ChildProcess(BinType type)
-    : executablePath_(Paths::instance().executable(type))
+    : executablePath_(PathResolver::instance().executable(type))
     , state_(ProcState::IDLE)
 {
 }

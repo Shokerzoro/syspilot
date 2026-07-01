@@ -27,7 +27,7 @@ TEST(StorageTests, UpdatesAndReadsVersion)
 {
     set_storage_test_identity(QStringLiteral("storage_updates_and_reads_version"));
 
-    syspilot::Storage storage;
+    syspilot::SettingsStorage storage;
     ASSERT_TRUE(storage.remove_uniter_data());
 
     ASSERT_TRUE(storage.update_version(QStringLiteral("0.0.2")));
@@ -44,7 +44,7 @@ TEST(StorageTests, RemoveUniterDataClearsVersion)
 {
     set_storage_test_identity(QStringLiteral("storage_remove_uniter_data_clears_version"));
 
-    syspilot::Storage storage;
+    syspilot::SettingsStorage storage;
     ASSERT_TRUE(storage.update_version(QStringLiteral("1.2.3")));
     ASSERT_TRUE(storage.remove_uniter_data());
 
@@ -60,7 +60,7 @@ TEST(StorageTests, MissingIdentityReturnsFalse)
 {
     clear_storage_test_identity();
 
-    syspilot::Storage storage;
+    syspilot::SettingsStorage storage;
 
     QString version;
     EXPECT_FALSE(storage.version(version));
@@ -73,7 +73,7 @@ TEST(StorageTests, EmbedDataSetsApplicationVersion)
 {
     set_storage_test_identity(QStringLiteral("storage_embed_data_sets_application_version"));
 
-    syspilot::Storage storage;
+    syspilot::SettingsStorage storage;
     ASSERT_TRUE(storage.remove_uniter_data());
     ASSERT_TRUE(storage.update_version(QStringLiteral("2.0.0")));
 
