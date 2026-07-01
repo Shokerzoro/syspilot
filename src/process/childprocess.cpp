@@ -41,6 +41,13 @@ bool ChildProcess::run()
     return state_ == ProcState::WORKING;
 }
 
+bool ChildProcess::wait_started(int timeoutMs)
+{
+    const bool started = process_.waitForStarted(timeoutMs);
+    update_state();
+    return started && state_ == ProcState::WORKING;
+}
+
 void ChildProcess::stop()
 {
     update_state();

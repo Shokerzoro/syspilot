@@ -27,10 +27,12 @@ inline std::ostream& operator<<(std::ostream& os, ::syspilot::ElevatorCommands v
 
 // Verbose from ElevatorArgs version 2.
 namespace syspilot {
-inline std::array<std::pair<std::string, int>, 3> ElevatorArgsPairs = {{
+inline std::array<std::pair<std::string, int>, 5> ElevatorArgsPairs = {{
     {"approot", static_cast<int>(::syspilot::ElevatorArgs::approot)},
     {"updates", static_cast<int>(::syspilot::ElevatorArgs::updates)},
     {"newversion", static_cast<int>(::syspilot::ElevatorArgs::newversion)},
+    {"prepared", static_cast<int>(::syspilot::ElevatorArgs::prepared)},
+    {"apppid", static_cast<int>(::syspilot::ElevatorArgs::apppid)},
 }};
 } // namespace syspilot
 

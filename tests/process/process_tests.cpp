@@ -128,6 +128,26 @@ TEST(ChildProcessTests, RunAndWaitOwnsStartedProcess)
     EXPECT_EQ(process.exit_code(), 0);
 }
 
+TEST(ChildProcessTests, WaitStartedConfirmsRunningProcess)
+{
+    syspilot::ChildProcess process(current_test_executable());
+    ASSERT_TRUE(process.add_argument(QStringLiteral("--gtest_list_tests")));
+
+    ASSERT_TRUE(process.run()) << process.error_string().toStdString();
+    EXPECT_TRUE(process.wait_started());
+    EXPECT_EQ(process.state(), syspilot::ProcState::WORKING);
+
+    EXPECT_TRUE(process.wait());
+}
+
+TEST(ChildProcessTests, WaitStartedReturnsFalseForInvalidExecutable)
+{
+    syspilot::ChildProcess process(QStringLiteral("C:/Projects/missing-executable.exe"));
+
+    EXPECT_FALSE(process.run());
+    EXPECT_FALSE(process.wait_started(10));
+}
+
 TEST(ProcessTests, InvalidPidStartsStopped)
 {
     syspilot::ProcessHandle process(-1);

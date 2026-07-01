@@ -22,6 +22,7 @@ public:
     bool operator<<(const CLIOptions<Command, Argument>& options);
 
     bool run();
+    bool wait_started(int timeoutMs = 3000);
     void stop();
     void kill();
     bool wait();

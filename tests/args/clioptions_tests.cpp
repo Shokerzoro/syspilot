@@ -2,6 +2,7 @@
 
 #include <QStringList>
 
+#include <syspilot/verbose/elevatorargs.h>
 #include <syspilot/verbose/pdfengineargs.h>
 
 TEST(CLIOptionsTests, DefaultConstructionAllowsSettersAndGetters)
@@ -85,4 +86,36 @@ TEST(CLIOptionsTests, RejectsMissingArgumentValue)
     const syspilot::PdfEngineCLIOptions options(3, argv);
 
     EXPECT_FALSE(options.valid());
+}
+
+TEST(CLIOptionsTests, ParsesElevatorPreparedArgument)
+{
+    char executable[] = "elevator";
+    char command[] = "update";
+    char argument[] = "--prepared";
+    char value[] = "true";
+    char* argv[] = {executable, command, argument, value};
+
+    const syspilot::ElevatorCLIOptions options(4, argv);
+
+    EXPECT_TRUE(options.valid()) << options.error();
+    EXPECT_TRUE(options.command(syspilot::ElevatorCommands::update));
+    EXPECT_TRUE(options.has_argument(syspilot::ElevatorArgs::prepared));
+    EXPECT_EQ(options.argument(syspilot::ElevatorArgs::prepared), "true");
+}
+
+TEST(CLIOptionsTests, ParsesElevatorAppPidArgument)
+{
+    char executable[] = "elevator";
+    char command[] = "update";
+    char argument[] = "--apppid";
+    char value[] = "123";
+    char* argv[] = {executable, command, argument, value};
+
+    const syspilot::ElevatorCLIOptions options(4, argv);
+
+    EXPECT_TRUE(options.valid()) << options.error();
+    EXPECT_TRUE(options.command(syspilot::ElevatorCommands::update));
+    EXPECT_TRUE(options.has_argument(syspilot::ElevatorArgs::apppid));
+    EXPECT_EQ(options.argument(syspilot::ElevatorArgs::apppid), "123");
 }

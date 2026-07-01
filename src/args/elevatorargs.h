@@ -16,7 +16,9 @@ enum class ElevatorCommands { // Verbosed version 2. Need update(yes/no): no
 enum class ElevatorArgs { // Verbosed version 2. Need update(yes/no): no
     approot,
     updates,
-    newversion
+    newversion,
+    prepared,
+    apppid
 };
 
 }
