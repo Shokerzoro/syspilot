@@ -27,6 +27,8 @@ void unset_standard_environment()
     environment.unset(syspilot::EnvType::AppPid);
     environment.unset(syspilot::EnvType::ElevatorPid);
     environment.unset(syspilot::EnvType::PdfEnginePid);
+    environment.unset(syspilot::EnvType::ServerType);
+    environment.unset(syspilot::EnvType::ServerIp);
 }
 
 } // namespace
@@ -130,6 +132,23 @@ TEST(EnvironmentTests, CanSetReadAndUnsetExecutablePidVariables)
     EXPECT_TRUE(environment.has(syspilot::EnvType::AppPid));
     EXPECT_TRUE(environment.has(syspilot::EnvType::ElevatorPid));
     EXPECT_TRUE(environment.has(syspilot::EnvType::PdfEnginePid));
+
+    unset_standard_environment();
+}
+
+TEST(EnvironmentTests, CanSetReadAndUnsetServerVariables)
+{
+    auto& environment = syspilot::Environment::instance();
+    unset_standard_environment();
+
+    ASSERT_TRUE(environment.set(syspilot::EnvType::ServerType, QStringLiteral("remote")));
+    ASSERT_TRUE(environment.set(syspilot::EnvType::ServerIp, QStringLiteral("192.168.1.10")));
+
+    EXPECT_EQ(environment.read(syspilot::EnvType::ServerType), QStringLiteral("remote"));
+    EXPECT_EQ(environment.read(syspilot::EnvType::ServerIp), QStringLiteral("192.168.1.10"));
+
+    EXPECT_TRUE(environment.has(syspilot::EnvType::ServerType));
+    EXPECT_TRUE(environment.has(syspilot::EnvType::ServerIp));
 
     unset_standard_environment();
 }

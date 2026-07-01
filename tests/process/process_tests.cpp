@@ -9,6 +9,7 @@
 
 #include <process/childprocess.h>
 #include <process/process.h>
+#include <syspilot/verbose/pdfengineargs.h>
 #include <syspilot/verbose/processtypes.h>
 
 namespace {
@@ -64,6 +65,34 @@ TEST(ChildProcessTests, AddArgumentAllowedOnlyWhileIdle)
     EXPECT_FALSE(process.add_argument(QStringLiteral("--late-argument")));
     EXPECT_TRUE(process.wait());
     EXPECT_EQ(process.state(), syspilot::ProcState::STOPPED);
+}
+
+TEST(ChildProcessTests, CLIOptionsCanBeAddedOnlyWhileIdle)
+{
+    syspilot::PdfEngineCLIOptions options;
+    options.set_command(syspilot::PdfEngineCommands::snapshot);
+    options.set_argument(syspilot::PdfEngineArgs::output, "result.xml");
+
+    syspilot::ChildProcess process(current_test_executable());
+    EXPECT_TRUE(process << options);
+
+    syspilot::ChildProcess runningProcess(current_test_executable());
+    ASSERT_TRUE(runningProcess.add_argument(QStringLiteral("--gtest_list_tests")));
+    ASSERT_TRUE(runningProcess.run()) << runningProcess.error_string().toStdString();
+    EXPECT_FALSE(runningProcess << options);
+    EXPECT_TRUE(runningProcess.wait());
+}
+
+TEST(ChildProcessTests, InvalidCLIOptionsAreRejected)
+{
+    char executable[] = "pdfengine";
+    char command[] = "missing";
+    char* argv[] = {executable, command};
+    const syspilot::PdfEngineCLIOptions options(2, argv);
+
+    syspilot::ChildProcess process(current_test_executable());
+
+    EXPECT_FALSE(process << options);
 }
 
 TEST(ChildProcessTests, WaitBeforeRunReturnsFalseAndKeepsIdle)

@@ -9,7 +9,7 @@
 
 // Verbose from EnvType version 1.
 namespace syspilot {
-inline std::array<std::pair<std::string, int>, 13> EnvTypePairs = {{
+inline std::array<std::pair<std::string, int>, 15> EnvTypePairs = {{
     {"Version", static_cast<int>(::syspilot::EnvType::Version)},
     {"AppRoot", static_cast<int>(::syspilot::EnvType::AppRoot)},
     {"Binaries", static_cast<int>(::syspilot::EnvType::Binaries)},
@@ -23,6 +23,8 @@ inline std::array<std::pair<std::string, int>, 13> EnvTypePairs = {{
     {"AppPid", static_cast<int>(::syspilot::EnvType::AppPid)},
     {"ElevatorPid", static_cast<int>(::syspilot::EnvType::ElevatorPid)},
     {"PdfEnginePid", static_cast<int>(::syspilot::EnvType::PdfEnginePid)},
+    {"ServerType", static_cast<int>(::syspilot::EnvType::ServerType)},
+    {"ServerIp", static_cast<int>(::syspilot::EnvType::ServerIp)},
 }};
 } // namespace syspilot
 

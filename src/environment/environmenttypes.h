@@ -16,6 +16,8 @@ enum class EnvType { // Verbosed version 1. Need update(yes/no): no
     AppPid,
     ElevatorPid,
     PdfEnginePid,
+    ServerType,
+    ServerIp,
 };
 
 } // namespace syspilot

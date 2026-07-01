@@ -1,5 +1,6 @@
 #pragma once
 
+#include <args/clioptions.h>
 #include "processtypes.h"
 
 #include <paths/pathtypes.h>
@@ -17,6 +18,8 @@ public:
     explicit ChildProcess(const QString& executablePath);
 
     bool add_argument(const QString& argument);
+    template<class Command, class Argument>
+    bool operator<<(const CLIOptions<Command, Argument>& options);
 
     bool run();
     void stop();
@@ -46,5 +49,17 @@ private:
     QProcess process_;
     ProcState state_;
 };
+
+template<class Command, class Argument>
+bool ChildProcess::operator<<(const CLIOptions<Command, Argument>& options)
+{
+    update_state();
+    if(state_ != ProcState::IDLE || !options.valid()) {
+        return false;
+    }
+
+    arguments_.append(options.to_qstring_list());
+    return true;
+}
 
 } // namespace syspilot

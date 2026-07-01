@@ -91,6 +91,10 @@ QByteArray Environment::key(EnvType type) const
         return QByteArrayLiteral("UNITER_ELEVATOR_PID");
     case EnvType::PdfEnginePid:
         return QByteArrayLiteral("UNITER_PDFENGINE_PID");
+    case EnvType::ServerType:
+        return QByteArrayLiteral("UNITER_SERVER_TYPE");
+    case EnvType::ServerIp:
+        return QByteArrayLiteral("UNITER_SERVER_IP");
     }
 
     return QByteArray();
@@ -124,6 +128,8 @@ QString Environment::resolve(EnvType type) const
     case EnvType::AppPid:
     case EnvType::ElevatorPid:
     case EnvType::PdfEnginePid:
+    case EnvType::ServerType:
+    case EnvType::ServerIp:
         return read(type);
     }
 
