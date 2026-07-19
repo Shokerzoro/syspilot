@@ -56,17 +56,24 @@ TEST(StorageTests, RemoveUniterDataClearsVersion)
     clear_storage_test_identity();
 }
 
-TEST(StorageTests, MissingIdentityReturnsFalse)
+TEST(StorageTests, IdentityAvailabilityMatchesBuildConfiguration)
 {
     clear_storage_test_identity();
 
     syspilot::SettingsStorage storage;
 
     QString version;
+#if defined(UNITER_ORGANIZATION_NAME) && defined(UNITER_APPLICATION_NAME)
+    EXPECT_TRUE(storage.version(version));
+    EXPECT_TRUE(storage.update_version(QStringLiteral("0.0.2")));
+    EXPECT_TRUE(storage.remove_uniter_data());
+    EXPECT_TRUE(storage.embed_data());
+#else
     EXPECT_FALSE(storage.version(version));
     EXPECT_FALSE(storage.update_version(QStringLiteral("0.0.2")));
     EXPECT_FALSE(storage.remove_uniter_data());
     EXPECT_FALSE(storage.embed_data());
+#endif
 }
 
 TEST(StorageTests, EmbedDataSetsApplicationVersion)
