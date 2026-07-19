@@ -6,6 +6,7 @@
 #include <paths/paths.h>
 #include <process/process.h>
 #include <recover/recover.h>
+#include <secure/secure.h>
 #include <storage/storage.h>
 
 TEST(UmbrellaHeadersTests, ExposeDirectoryPublicApi)
@@ -16,6 +17,7 @@ TEST(UmbrellaHeadersTests, ExposeDirectoryPublicApi)
     syspilot::PathResolver* paths = nullptr;
     syspilot::ChildProcess* childProcess = nullptr;
     syspilot::ProcessHandle* process = nullptr;
+    syspilot::CredentialStorage* secureStorage = nullptr;
     syspilot::SettingsStorage* storage = nullptr;
     syspilot::RecoveryClass* recovery = nullptr;
 
@@ -25,6 +27,7 @@ TEST(UmbrellaHeadersTests, ExposeDirectoryPublicApi)
     EXPECT_EQ(paths, nullptr);
     EXPECT_EQ(childProcess, nullptr);
     EXPECT_EQ(process, nullptr);
+    EXPECT_EQ(secureStorage, nullptr);
     EXPECT_EQ(storage, nullptr);
     EXPECT_EQ(recovery, nullptr);
 }

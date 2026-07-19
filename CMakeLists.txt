@@ -1,5 +1,5 @@
 # Versioning
-project(syspilot VERSION 0.1.0 LANGUAGES CXX)
+project(syspilot VERSION 0.2.0 LANGUAGES CXX)
 
 # Sources
 include(cmake/sources.cmake)
@@ -75,6 +75,14 @@ if(DEBUG_BUILD AND COMMAND devkit_use_qt_shared)
     devkit_use_qt_shared(syspilot Core Network)
 elseif(RELEASE_BUILD AND COMMAND devkit_use_qt_static)
     devkit_use_qt_static(syspilot Core Network)
+endif()
+
+if(SYSPILOT_COMPILE_SOURCES AND WIN32)
+    if(NOT COMMAND devkit_use_windows_credentials)
+        message(FATAL_ERROR
+            "syspilot requires devkit_use_windows_credentials() on Windows")
+    endif()
+    devkit_use_windows_credentials(syspilot)
 endif()
 
 if(SYSPILOT_COMPILE_SOURCES AND COMMAND devkit_finalize)

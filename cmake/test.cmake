@@ -9,7 +9,7 @@ if(SYSPILOT_TEST_SOURCES)
 
     target_link_libraries(syspilot_tests
         PRIVATE
-            GTest::gtest_main
+            GTest::gtest
             syspilot
     )
 
