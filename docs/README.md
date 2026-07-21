@@ -17,6 +17,22 @@ MVP: `+`
 
 Related stack documentation: [Project stack](../../../docs/project-stack.md).
 
+## Runtime directories
+
+`PathResolver` places runtime data exclusively below Qt's
+`QStandardPaths::TempLocation`:
+
+```text
+<temp>/database
+<temp>/filecache
+<temp>/localminio
+<temp>/updates
+```
+
+There is no fallback location. If Qt does not provide a temporary directory,
+these paths remain unresolved and `ensure_exists` fails. Explicit `DirType`
+overrides remain available for tests and controlled deployments.
+
 ## Windows credential storage
 
 `<secure/secure.h>` exposes `syspilot::CredentialStorage`, a keyed wrapper over

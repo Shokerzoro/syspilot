@@ -6,6 +6,7 @@
 #include <array>
 #include <map>
 #include <optional>
+#include <set>
 #include <sstream>
 #include <string>
 #include <utility>
@@ -32,7 +33,7 @@ std::optional<Enum> cli_enum_from_string(const std::array<std::pair<std::string,
 
 } // namespace detail
 
-template<class Command, class Argument>
+template<class Command, class Argument, class Flag>
 class CLIOptions {
 public:
     // Constructors
@@ -49,6 +50,10 @@ public:
     std::string argument(Argument argument) const;
     bool has_argument(Argument argument) const;
 
+    // Flags
+    void set_flag(Flag flag);
+    bool has_flag(Flag flag) const;
+
     // State
     bool valid() const;
     std::string error() const;
@@ -63,6 +68,7 @@ private:
 private:
     std::optional<Command> command_;
     std::map<Argument, std::string> arguments_;
+    std::set<Flag> flags_;
     bool valid_ = true;
     std::string error_;
 };

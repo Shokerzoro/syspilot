@@ -5,6 +5,10 @@
 #include <string>
 #include <utility>
 
+#ifdef QT_CORE_LIB
+#include <QDebug>
+#endif
+
 #include "../src/paths/pathtypes.h"
 
 // Verbose from DirType version 1.
@@ -19,14 +23,26 @@ inline std::array<std::pair<std::string, int>, 6> DirTypePairs = {{
 }};
 } // namespace syspilot
 
-inline std::ostream& operator<<(std::ostream& os, ::syspilot::DirType value) {
+inline std::string to_string(::syspilot::DirType value) {
     for (auto const& item : ::syspilot::DirTypePairs) {
         if (item.second == static_cast<int>(value)) {
-            return os << item.first;
+            return item.first;
         }
     }
-    return os << static_cast<int>(value);
+    return std::to_string(static_cast<int>(value));
 }
+
+inline std::ostream& operator<<(std::ostream& os, ::syspilot::DirType value) {
+    return os << ::to_string(value);
+}
+
+#ifdef QT_CORE_LIB
+inline QDebug operator<<(QDebug dbg, ::syspilot::DirType value) {
+    auto const text = ::to_string(value);
+    dbg << text.c_str();
+    return dbg;
+}
+#endif
 // Verbose end DirType.
 
 // Verbose from BinType version 1.
@@ -38,14 +54,26 @@ inline std::array<std::pair<std::string, int>, 3> BinTypePairs = {{
 }};
 } // namespace syspilot
 
-inline std::ostream& operator<<(std::ostream& os, ::syspilot::BinType value) {
+inline std::string to_string(::syspilot::BinType value) {
     for (auto const& item : ::syspilot::BinTypePairs) {
         if (item.second == static_cast<int>(value)) {
-            return os << item.first;
+            return item.first;
         }
     }
-    return os << static_cast<int>(value);
+    return std::to_string(static_cast<int>(value));
 }
+
+inline std::ostream& operator<<(std::ostream& os, ::syspilot::BinType value) {
+    return os << ::to_string(value);
+}
+
+#ifdef QT_CORE_LIB
+inline QDebug operator<<(QDebug dbg, ::syspilot::BinType value) {
+    auto const text = ::to_string(value);
+    dbg << text.c_str();
+    return dbg;
+}
+#endif
 // Verbose end BinType.
 
 // Manual part

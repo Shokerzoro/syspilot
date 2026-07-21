@@ -7,18 +7,23 @@
 
 namespace syspilot {
 
-enum class ElevatorCommands { // Verbosed version 2. Need update(yes/no): no
+enum class ElevatorCommands { // Verbosed version 3. Need update(yes/no): no
     update,
+    restartapp,
     uninstall
 };
 
 
-enum class ElevatorArgs { // Verbosed version 2. Need update(yes/no): no
+enum class ElevatorArgs { // Verbosed version 3. Need update(yes/no): no
     approot,
     updates,
     newversion,
-    prepared,
     apppid
+};
+
+
+enum class ElevatorFlags { // Verbosed version 1. Need update(yes/no): no
+    prepared
 };
 
 }

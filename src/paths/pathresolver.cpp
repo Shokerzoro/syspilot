@@ -25,13 +25,13 @@ QString PathResolver::resolve(DirType type) const
     case DirType::AppRoot:
         return app_root();
     case DirType::Database:
-        return app_root() + QStringLiteral("/database");
+        return temporary_path(QStringLiteral("database"));
     case DirType::FileCache:
-        return temporary_root() + QStringLiteral("/cache");
+        return temporary_path(QStringLiteral("filecache"));
     case DirType::Updates:
-        return temporary_root() + QStringLiteral("/updates");
+        return temporary_path(QStringLiteral("updates"));
     case DirType::LocalMinIO:
-        return temporary_root() + QStringLiteral("/local-minio");
+        return temporary_path(QStringLiteral("localminio"));
     }
 
     return QString();
@@ -71,11 +71,13 @@ QString PathResolver::app_root() const
 QString PathResolver::temporary_root() const
 {
     const QString temporaryLocation = QStandardPaths::writableLocation(QStandardPaths::TempLocation);
-    if(!temporaryLocation.isEmpty()) {
-        return QDir::cleanPath(temporaryLocation);
-    }
+    return temporaryLocation.isEmpty() ? QString() : QDir::cleanPath(temporaryLocation);
+}
 
-    return QDir::cleanPath(app_root() + QStringLiteral("/tmp"));
+QString PathResolver::temporary_path(const QString& directory) const
+{
+    const QString root = temporary_root();
+    return root.isEmpty() ? QString() : QDir::cleanPath(root + QStringLiteral("/") + directory);
 }
 
 QString PathResolver::clean_path(const std::filesystem::path& path) const

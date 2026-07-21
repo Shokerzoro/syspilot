@@ -41,26 +41,34 @@ TEST(PathsTests, ResolvesAppRootAsBinariesParentDirectory)
     );
 }
 
-TEST(PathsTests, ResolvesDatabaseDirectoryUnderAppRoot)
+TEST(PathsTests, ResolvesRuntimeDataDirectoriesUnderTemporaryDirectory)
 {
-    const QString appRoot = QDir::cleanPath(
-        QCoreApplication::applicationDirPath() + QStringLiteral("/..")
-    );
-
-    EXPECT_EQ(
-        syspilot::PathResolver::instance().resolve(syspilot::DirType::Database),
-        appRoot + QStringLiteral("/database")
-    );
-}
-
-TEST(PathsTests, ResolvesTemporaryWorkDirectoriesUnderTemporaryDirectory)
-{
-    const QString temporaryRoot = QDir::cleanPath(QStandardPaths::writableLocation(QStandardPaths::TempLocation));
+    const QString temporaryLocation = QStandardPaths::writableLocation(QStandardPaths::TempLocation);
     auto& paths = syspilot::PathResolver::instance();
 
-    EXPECT_EQ(paths.resolve(syspilot::DirType::FileCache), temporaryRoot + QStringLiteral("/cache"));
+    if(temporaryLocation.isEmpty()) {
+        EXPECT_TRUE(paths.resolve(syspilot::DirType::Database).isEmpty());
+        EXPECT_TRUE(paths.resolve(syspilot::DirType::FileCache).isEmpty());
+        EXPECT_TRUE(paths.resolve(syspilot::DirType::Updates).isEmpty());
+        EXPECT_TRUE(paths.resolve(syspilot::DirType::LocalMinIO).isEmpty());
+        return;
+    }
+
+    const QString temporaryRoot = QDir::cleanPath(temporaryLocation);
+    EXPECT_EQ(paths.resolve(syspilot::DirType::Database), temporaryRoot + QStringLiteral("/database"));
+    EXPECT_EQ(paths.resolve(syspilot::DirType::FileCache), temporaryRoot + QStringLiteral("/filecache"));
     EXPECT_EQ(paths.resolve(syspilot::DirType::Updates), temporaryRoot + QStringLiteral("/updates"));
-    EXPECT_EQ(paths.resolve(syspilot::DirType::LocalMinIO), temporaryRoot + QStringLiteral("/local-minio"));
+    EXPECT_EQ(paths.resolve(syspilot::DirType::LocalMinIO), temporaryRoot + QStringLiteral("/localminio"));
+}
+
+TEST(PathsTests, RuntimeDataDirectoriesDoNotResolveUnderAppRoot)
+{
+    const QString appRoot = syspilot::PathResolver::instance().resolve(syspilot::DirType::AppRoot);
+    auto& paths = syspilot::PathResolver::instance();
+
+    EXPECT_FALSE(paths.resolve(syspilot::DirType::Database).startsWith(appRoot + QStringLiteral("/")));
+    EXPECT_FALSE(paths.resolve(syspilot::DirType::FileCache).startsWith(appRoot + QStringLiteral("/")));
+    EXPECT_FALSE(paths.resolve(syspilot::DirType::LocalMinIO).startsWith(appRoot + QStringLiteral("/")));
 }
 
 TEST(PathsTests, SetterOverridesDirectoryResolving)

@@ -18,8 +18,8 @@ public:
     explicit ChildProcess(const QString& executablePath);
 
     bool add_argument(const QString& argument);
-    template<class Command, class Argument>
-    bool operator<<(const CLIOptions<Command, Argument>& options);
+    template<class Command, class Argument, class Flag>
+    bool operator<<(const CLIOptions<Command, Argument, Flag>& options);
 
     bool run();
     bool wait_started(int timeoutMs = 3000);
@@ -51,8 +51,8 @@ private:
     ProcState state_;
 };
 
-template<class Command, class Argument>
-bool ChildProcess::operator<<(const CLIOptions<Command, Argument>& options)
+template<class Command, class Argument, class Flag>
+bool ChildProcess::operator<<(const CLIOptions<Command, Argument, Flag>& options)
 {
     update_state();
     if(state_ != ProcState::IDLE || !options.valid()) {

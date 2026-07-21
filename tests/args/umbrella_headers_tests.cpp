@@ -11,7 +11,10 @@
 
 TEST(UmbrellaHeadersTests, ExposeDirectoryPublicApi)
 {
-    syspilot::CLIOptions<syspilot::ElevatorCommands, syspilot::ElevatorArgs>* options = nullptr;
+    syspilot::CLIOptions<
+        syspilot::ElevatorCommands,
+        syspilot::ElevatorArgs,
+        syspilot::ElevatorFlags>* options = nullptr;
     syspilot::EnvironmentManager* environment = nullptr;
     syspilot::Logger* logger = nullptr;
     syspilot::PathResolver* paths = nullptr;
