@@ -18,9 +18,10 @@ namespace syspilot {
     };
 
 
-    enum class UniterFlags { // Verbosed version 1. Need update(yes/no): no
+    enum class UniterFlags { // Verbosed version 2. Need update(yes/no): no
         updated,
-        updatefailed
+        updatefailed,
+        local
     };
 
 }

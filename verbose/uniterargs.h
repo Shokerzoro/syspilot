@@ -70,11 +70,12 @@ inline QDebug operator<<(QDebug dbg, ::syspilot::UniterArgs value) {
 #endif
 // Verbose end UniterArgs.
 
-// Verbose from UniterFlags version 1.
+// Verbose from UniterFlags version 2.
 namespace syspilot {
-inline std::array<std::pair<std::string, int>, 2> UniterFlagsPairs = {{
+inline std::array<std::pair<std::string, int>, 3> UniterFlagsPairs = {{
     {"updated", static_cast<int>(::syspilot::UniterFlags::updated)},
     {"updatefailed", static_cast<int>(::syspilot::UniterFlags::updatefailed)},
+    {"local", static_cast<int>(::syspilot::UniterFlags::local)},
 }};
 } // namespace syspilot
 
