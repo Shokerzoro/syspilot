@@ -5,6 +5,10 @@
 #include <string>
 #include <utility>
 
+#ifdef QT_CORE_LIB
+#include <QDebug>
+#endif
+
 #include "../src/args/clioptions.h"
 
 // Manual part

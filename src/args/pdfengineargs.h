@@ -16,6 +16,10 @@ namespace syspilot {
         output
     };
 
+
+    enum class PdfEngineFlags { // Verbosed version 1. Need update(yes/no): no
+    };
+
 }
 
 #endif //UNITER_ELEVATOR_PDFENGINEARGS_H

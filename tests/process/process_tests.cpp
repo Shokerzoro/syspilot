@@ -8,6 +8,7 @@
 #include <sstream>
 
 #include <process/process.h>
+#include <syspilot/verbose/elevatorargs.h>
 #include <syspilot/verbose/pdfengineargs.h>
 #include <syspilot/verbose/processtypes.h>
 
@@ -68,9 +69,10 @@ TEST(ChildProcessTests, AddArgumentAllowedOnlyWhileIdle)
 
 TEST(ChildProcessTests, CLIOptionsCanBeAddedOnlyWhileIdle)
 {
-    syspilot::PdfEngineCLIOptions options;
-    options.set_command(syspilot::PdfEngineCommands::snapshot);
-    options.set_argument(syspilot::PdfEngineArgs::output, "result.xml");
+    syspilot::ElevatorCLIOptions options;
+    options.set_command(syspilot::ElevatorCommands::update);
+    options.set_argument(syspilot::ElevatorArgs::apppid, "123");
+    options.set_flag(syspilot::ElevatorFlags::prepared);
 
     syspilot::ChildProcess process(current_test_executable());
     EXPECT_TRUE(process << options);

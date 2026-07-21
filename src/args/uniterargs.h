@@ -12,9 +12,13 @@ namespace syspilot {
     };
 
 
-    enum class UniterArgs { // Verbosed version 2. Need update(yes/no): no
+    enum class UniterArgs { // Verbosed version 3. Need update(yes/no): no
         servertype,
-        serverip,
+        serverip
+    };
+
+
+    enum class UniterFlags { // Verbosed version 1. Need update(yes/no): no
         updated,
         updatefailed
     };

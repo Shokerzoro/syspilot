@@ -30,6 +30,7 @@ private:
 
     QString app_root() const;
     QString temporary_root() const;
+    QString temporary_path(const QString& directory) const;
     QString clean_path(const std::filesystem::path& path) const;
     QString executable_name(BinType type) const;
 
