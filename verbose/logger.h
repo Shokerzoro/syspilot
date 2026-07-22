@@ -5,6 +5,10 @@
 #include <string>
 #include <utility>
 
+#ifdef QT_CORE_LIB
+#include <QDebug>
+#endif
+
 #include "../src/logging/logger.h"
 
 // Manual part
