@@ -6,6 +6,10 @@
 #include <QString>
 #include <QUdpSocket>
 
+#ifdef DEBUG_BUILD
+#include <QDebug>
+#endif
+
 #ifndef UNITER_WEB_DOMAIN
 #define UNITER_WEB_DOMAIN "localhost"
 #endif
@@ -55,13 +59,19 @@ Logger::Logger(int length)
 
 void Logger::push_log(const std::string& str)
 {
-    std::lock_guard lock(mutex_);
+    {
+        std::lock_guard lock(mutex_);
 
-    if(static_cast<int>(logs_.size()) >= max_logs_) {
-        logs_.pop_front();
+        if(static_cast<int>(logs_.size()) >= max_logs_) {
+            logs_.pop_front();
+        }
+
+        logs_.push_back(str);
     }
 
-    logs_.push_back(str);
+#ifdef DEBUG_BUILD
+    qDebug().noquote() << QString::fromStdString(str);
+#endif
 }
 
 std::string Logger::make_crash_payload() const
