@@ -1,5 +1,5 @@
 # Versioning
-project(syspilot VERSION 0.3.1 LANGUAGES CXX)
+project(syspilot VERSION 0.3.2 LANGUAGES CXX)
 
 # Sources
 include(cmake/sources.cmake)
