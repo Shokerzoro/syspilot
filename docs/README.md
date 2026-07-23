@@ -59,3 +59,15 @@ if(result.ok()) {
 
 On non-Windows platforms the same API is available but returns
 `CredentialStatus::UnsupportedPlatform`.
+
+## PDF engine process
+
+The drawing snapshot process is intentionally synchronous at the current
+business-logic boundary:
+
+```text
+pdfengine snapshot --input <project-directory> --output <parser-xml>
+```
+
+The caller must wait for the process and validate both its exit status and the
+requested XML output. Threading belongs to a later UI orchestration stage.

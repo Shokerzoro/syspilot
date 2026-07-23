@@ -40,9 +40,10 @@ inline QDebug operator<<(QDebug dbg, ::syspilot::PdfEngineCommands value) {
 #endif
 // Verbose end PdfEngineCommands.
 
-// Verbose from PdfEngineArgs version 2.
+// Verbose from PdfEngineArgs version 3.
 namespace syspilot {
-inline std::array<std::pair<std::string, int>, 1> PdfEngineArgsPairs = {{
+inline std::array<std::pair<std::string, int>, 2> PdfEngineArgsPairs = {{
+    {"input", static_cast<int>(::syspilot::PdfEngineArgs::input)},
     {"output", static_cast<int>(::syspilot::PdfEngineArgs::output)},
 }};
 } // namespace syspilot
